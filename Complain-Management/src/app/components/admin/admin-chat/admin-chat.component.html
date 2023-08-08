@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-12 col-md-2 ">
+    <div class="row col-md-12 ml-2">
+      <div class="cht-title mb-3" style="text-align: center" *ngIf="MainRecever!==''">
+        <h2>Chat With {{MainRecever}}</h2>
+      </div>
+      <div *ngFor="let x of AllUser[0]">
+        <div
+          class=" chat-userList-item"
+          *ngIf="x['username'] !== 'admin'"
+        >
+          <button mat-raised-button class="chat-list" (click)="chatSelector(x['username'])">
+            {{ x["username"] }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-8" style="margin-top: -100px;">
+    <div class="chat-messages">
+      
+      <div class="chat-messages-show-container">
+        <ul class="chat-messages-show-list" id="message-list"></ul>
+      </div>
+      <div class="chat-messages-create-container">
+        <input
+          class="chat-messages-create-input"
+          type="text"
+          [(ngModel)]="message"
+        />
+        <button
+          mat-raised-button
+          style="background-color: #aaa1a1;"
+          class="chat-messages-create-button"
+          (click)="SendMessage()"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+
+    
+  </div>
+</div>
+
+ 
+  

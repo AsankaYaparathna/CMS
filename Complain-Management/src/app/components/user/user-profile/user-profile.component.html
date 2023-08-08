@@ -1,0 +1,75 @@
+<div class="form-main-bg" >
+ 
+
+  <div class="form-body">
+    <div class="form-header" style="background-color: #aaa1a1;color: black;">
+      <div class="form-header-title">
+        <span>UPDATE PROFILE</span>
+      </div>
+    </div>
+    <form
+      #form
+      (ngSubmit)="addUser()"
+      [formGroup]="LoginForm"
+      class="form-container add-div-com"
+    >
+      <div>
+        <div class="form comp-div">
+          <mat-form-field appearance="outline">
+            <mat-label>{{UserData?.username}}</mat-label>
+            <input
+              matInput
+              formControlName="username"
+              placeholder="User Name"
+              ngDefaultControl
+              minlength="3"
+              readonly
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              formControlName="email"
+              matInput
+              placeholder="Email"
+              ngDefaultControl
+              minlength="3"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Mobile</mat-label>
+            <input
+              formControlName="phoneNo1"
+              matInput
+              placeholder="Mobile Number"
+              ngDefaultControl
+              minlength="3"
+           />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+              formControlName="password"
+              matInput
+              placeholder="Password"
+              ngDefaultControl
+              minlength="3"
+            />
+          </mat-form-field>
+
+        </div>
+        <div class="form-row"></div>
+        <div class="form-row-btn">
+          <div class="row-btn">
+            <button id="cancelbtn" mat-raised-button type="reset">Reset</button>
+            <button id="savebtn" mat-raised-button type="submit" style="background-color: #aaa1a1;">Save</button>
+           
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

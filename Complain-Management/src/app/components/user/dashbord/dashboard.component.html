@@ -1,0 +1,83 @@
+<mat-drawer-container class="example-container" autosize>
+  <div class="card">
+    <div class="card-body">
+    </div>
+  </div>
+  <div>
+    <nav class="navbar">
+      <button mat-icon-button color="primary" (click)="drawer.toggle()">
+        <mat-icon>home</mat-icon>
+      </button>
+
+      <button mat-raised-button (click)="btnEditProfile()" style="margin-left: 55%;">
+        <i class="fa fa-edit"></i>
+        <span style="margin-left: 10px;">Edit Profile</span>
+      </button>
+
+      <button mat-raised-button (click)="btnAddComplain()">
+        <i class="fa fa-plus-square-o"></i>
+        <span style="margin-left: 10px;">Add New Complaint</span>
+      </button>
+
+      <button mat-raised-button (click)="btnChat()" style="margin-right: 20px;">
+        <i class="fa fa-wechat"></i>
+        <span style="margin-left: 10px;">Chat</span>
+      </button>
+
+    </nav>
+  </div>
+
+  <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+
+    <div class="sideNev-content">
+      <h1 class="mt-5 mb-5"><span style="font-weight: 900;">WELCOME TO THE COMPLAIN MANAGEMENT PORTAL</span> </h1>
+
+      <div class="user-image-con">
+        <img class="user-image" src="../../../../assets/img/user1.png" alt="User Icon" />
+      </div>
+      <br>
+      <div class="body-content">
+        <span class="all-post" style="margin-top: 50px;">
+          Hi, {{UserData?.username}}
+        </span>
+
+
+        <button mat-raised-button color="warn" (click)="logout()" class="mt-3">
+
+          <i class="fa fa-sign-out"></i><span style="margin-left: 10px;">LOG OUT</span>
+        </button>
+
+      </div>
+
+      <!-- <div class="all-body">
+      <div>
+        <button mat-raised-button class="side-button" (click)="btnEditProfile()"> 
+          Edit Profile
+          <i class="fa fa-edit" style="margin-left: 10px;"></i>
+        </button>
+
+        
+
+      </div>
+      <div class="mt-3">
+        <button mat-raised-button  class="side-button" (click)="btnAddComplain()"> 
+          Add New Complaint
+          <i class="fa fa-plus-square-o" style="margin-left: 10px;"></i>
+        </button>
+      </div>
+
+      <div class="mt-3">
+        <button mat-raised-button  class="side-button" (click)="btnChat()"> 
+          Chat
+          <i class="fa fa-wechat" style="margin-left: 10px;"></i>
+        </button>
+      </div>
+
+    </div> -->
+    </div>
+
+  </mat-drawer>
+  <app-user-profile *ngIf="BtnEditProfile"></app-user-profile>
+  <app-complaints *ngIf="BtnAddNewComplain"></app-complaints>
+  <app-chat *ngIf="BtnChat"></app-chat>
+</mat-drawer-container>

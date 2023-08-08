@@ -1,0 +1,260 @@
+<div class="form-main-bg" (keyup)="Test($event)">
+  <div class="row col-md-12" style="display:grid; grid-template-columns: auto auto auto;">
+    <button
+    mat-raised-button
+    style="background-color: #aaa1a1;"
+    class="add-btn-lv btn-dv-lv col-md-6 mb-3"
+    (click)="addNewCom()"
+    *ngIf="!BtnAddCom"
+  >
+    Add new
+  </button>
+
+  <button
+    mat-raised-button
+    color="warn"
+    class="add-btn-lv col-md-12 mb-3"
+    (click)="DownloadPDF()"
+    *ngIf="!BtnAddCom"
+  >
+    Download Report
+  </button>
+  </div>
+
+  <button
+    mat-raised-button
+    style="background-color: #aaa1a1;"
+    class="add-btn col-2 mb-3"
+    (click)="addNewCom()"
+    *ngIf="BtnAddCom"
+  >
+    Show List
+  </button>
+  <div class="form-body" *ngIf="!BtnAddCom" id="htmlData">
+    <div class="form-header" style="background-color: #aaa1a1;">
+      <div class="form-header-content" >
+        <div class="form-header-title">ALL COMPLAINTS</div>
+        <form
+          class="flex"
+          [formGroup]="filterComplaintsForm"
+          (ngSubmit)="refreshTable()"
+        ></form>
+      </div>
+    </div>
+    <div>
+      <div class="mat-elevation-z8">
+        <table class="form-table" mat-table [dataSource]="dataSource" matSort>
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Action
+            </th>
+            <td mat-cell class="form-table-column" *matCellDef="let row">
+              <div id="buttons">
+                <button
+                  mat-mini-fab
+                  color="warn"
+                  style="margin-left: 10px"
+                  (click)="deleteComplaint(row)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+
+                <button
+                  mat-mini-fab
+                  style="background-color: rgb(53, 213, 39); margin-left: 10px"
+                  (click)="approveComplaint(row)"
+                >
+                  <mat-icon>check</mat-icon>
+                </button>
+
+                <button
+                  mat-mini-fab
+                  style="background-color: rgb(216, 216, 58); margin-left: 10px"
+                  (click)="closeComplaint(row)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="cid">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Complaint ID
+            </th>
+            <td mat-cell class="form-table-column" *matCellDef="let row">
+              {{ row.cid }}
+            </td>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              class="form-table-column"
+              appHighlight
+              [text]="row?.cid"
+              classToApply="txt-highlight"
+            ></td>
+          </ng-container>
+
+          <ng-container matColumnDef="ctitle">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Complaint Title
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              class="form-table-column"
+              appHighlight
+              [text]="row?.ctitle"
+              classToApply="txt-highlight"
+            ></td>
+          </ng-container>
+
+          <ng-container matColumnDef="cdesc">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Complaint Desc
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              class="form-table-column"
+              appHighlight
+              [text]="row?.cdesc"
+              classToApply="txt-highlight"
+            ></td>
+          </ng-container>
+
+          <ng-container matColumnDef="cdate">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Created Date
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              class="form-table-column"
+              appHighlight
+              [text]="row?.cdate"
+              classToApply="txt-highlight"
+            ></td>
+          </ng-container>
+
+          <ng-container matColumnDef="ctime">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Created Time
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              class="form-table-column"
+              appHighlight
+              [text]="row?.ctime"
+              classToApply="txt-highlight"
+            ></td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell class="form-table-header" *matHeaderCellDef>
+              Status
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              class="form-table-column"
+              appHighlight
+              [text]="row?.status"
+              classToApply="txt-highlight"
+            ></td>
+          </ng-container>
+
+          <tr
+            id="table"
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [ngStyle]="{
+              'background-color': row.status === 'INACTIVATED' ? '#ffc4c4' : ''
+            }"
+          ></tr>
+        </table>
+      </div>
+      <mat-toolbar
+        class="mat-toolbar-table bg-skin-ternary text-skin-primary rounded-full"
+      >
+        <mat-toolbar-row class="bg-skin-ternary text-skin-primary rounded">
+          <label>page :</label>
+          <input
+            [value]="paginator.pageIndex + 1"
+            #page
+            (keyup.enter)="pageNavigate(page.value)"
+            class="bg-skin-ternary text-skin-primary"
+          />
+          <label>/{{ pageCount }}</label>
+          <span id="spacer"></span>
+          <mat-paginator
+            class="bg-skin-ternary text-skin-primary"
+            #paginator
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="tempPageEvent = getServerData($event)"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+        </mat-toolbar-row>
+      </mat-toolbar>
+    </div>
+  </div>
+
+  <div class="form-body" *ngIf="BtnAddCom">
+    <div class="form-header " style="background-color: #aaa1a1;">
+      <div class="form-header-title">
+        <span>ADD NEW COMPLAINT</span>
+      </div>
+    </div>
+    <form
+      #form
+      (ngSubmit)="saveComplaint()"
+      [formGroup]="complaintDetailsForm"
+      class="form-container add-div-com"
+    >
+      <div>
+        <div class="form comp-div">
+          <mat-form-field appearance="outline">
+            <mat-label>Complaint Title</mat-label>
+            <input
+              matInput
+              formControlName="ctitle"
+              placeholder="Complaint Title"
+              ngDefaultControl
+              minlength="3"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Complaint Desc</mat-label>
+            <textarea
+              formControlName="cdesc"
+              matInput
+              placeholder="Complaint Desc"
+              ngDefaultControl
+              minlength="3"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <div class="form-row"></div>
+        <div class="form-row-btn">
+          <div class="row-btn">
+            <button id="cancelbtn" mat-raised-button type="reset">Reset</button>
+            <button id="savebtn" mat-raised-button type="submit" style="background-color: #aaa1a1;">Save</button>
+            <button
+              *ngIf="apiResponse"
+              [class.btn-spinner]="apiResponse"
+              id="spinner"
+              mat-raised-button
+            ></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
